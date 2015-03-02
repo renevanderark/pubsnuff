@@ -1,0 +1,27 @@
+<html>
+	<head>
+		<meta charset="UTF-8" />
+	</head>
+	<body>
+
+<?php function renderNavPoints($epub, $navPoints) { ?>
+<ul>
+	<?php foreach($navPoints as $navPoint): ?>
+		<li>
+			<a target="main" href="/epub/<?php echo "section/" . $epub . "/" . $navPoint["src"]; ?>">
+				<?php echo $navPoint["label"]; ?>
+				<?php if(isset($navPoint["navPoints"])) { renderNavPoints($epub, $navPoint["navPoints"]); } ?>
+			</a>
+		</li>
+	<?php endforeach; ?>
+</ul>
+<?php } ?>
+<div style="float: left">
+	<h2><?php echo $toc["title"]; ?></h2>
+	<?php renderNavPoints($this->_epubFile, $toc["navPoints"]); ?>
+</div>
+<iframe name="main">
+
+</iframe>
+
+</body>
