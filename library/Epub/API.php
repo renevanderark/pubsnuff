@@ -15,11 +15,15 @@ class Epub_API {
 		"php" => "text/plain",
 		"text" => "text/plain",
 		"html" => "text/html",
+		"xhtml" => "text/html",
 		"json" => "application/json",
 		"xml" => "text/xml",
 		"jpg" => "image/jpeg",
 		"jpeg" => "image/jpeg",
-		"png" => "image/png"
+		"png" => "image/png",
+		"svg" => "image/svg",
+		"css" => "text/css",
+		"xpgt" => "text/css"
 	);
 
 	public function Epub_API($route, $getParams = array(), $pubdir = ".") {
@@ -79,6 +83,8 @@ class Epub_API {
 	}
 
 	public function serveAction() {
+		$this->_format = strtolower(preg_replace("/^.+\.([a-z]+)$/", "$1", $this->_zipAccess));
+		$this->_setContentType($this->_format);
 		return $this->reader->getFile($this->_zipAccess);
 	}
 }
