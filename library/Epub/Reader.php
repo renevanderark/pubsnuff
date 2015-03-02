@@ -72,8 +72,11 @@ class Epub_Reader {
 		return $this->_parseToc();
 	}
 
-	public function getSection($fileRef) {
-		var_dump($this->opfRoot . $fileRef);
+	public function getFile($fileRef) {
+		$fp = $this->zip->getStream($this->opfRoot . $fileRef);
+		$data = stream_get_contents($fp);
+		fclose($fp);
+		return $data;
 	}
 
 	function __destruct() {

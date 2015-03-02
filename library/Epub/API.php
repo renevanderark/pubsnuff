@@ -78,8 +78,8 @@ class Epub_API {
 		}
 	}
 
-	public function sectionAction() {
-		return $this->reader->getSection($this->_zipAccess);
+	public function serveAction() {
+		return $this->reader->getFile($this->_zipAccess);
 	}
 }
 ?>
