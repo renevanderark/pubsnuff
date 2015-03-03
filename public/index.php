@@ -24,7 +24,8 @@ if (preg_match("/^\/epub\/(.+)/", $path, $m)) {
 } else {
 	preg_match("/^\/(.+)/", $path, $m);
 	require_once('Epub/App.php');
-	if(!isset($m[1])) { $m[1] = "start"; }
+	if(!isset($m[1])) { $m[1] = "index"; }
 	$app = new Epub_App($m[1], $_GET, PUB_DIR);
-	$app->execute();
+	echo $app->execute();
+	
 }

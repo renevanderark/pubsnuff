@@ -21,9 +21,8 @@ class Epub_API {
 		"jpg" => "image/jpeg",
 		"jpeg" => "image/jpeg",
 		"png" => "image/png",
-		"svg" => "image/svg",
-		"css" => "text/css",
-		"xpgt" => "text/css"
+		"svg" => "image/svg+xml",
+		"css" => "text/css"
 	);
 
 	public function Epub_API($route, $getParams = array(), $pubdir = ".") {

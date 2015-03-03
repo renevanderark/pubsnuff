@@ -1,27 +1,35 @@
 <?php
+
 require_once 'Epub/API.php';
+require_once 'Epub/View.php';
 
 class Epub_App extends Epub_API {
+	private $_view;
 
 	public function Epub_App($route, $getParams = array(), $pubdir = ".") {
 		$this->_pubdir = $pubdir;
 		$this->_params = $getParams;
 		$this->_initPaths($route);
+		$this->_view = new Epub_View();
 	}
 
-	public function startAction() {
+	public function indexAction() {
+		$files = array();
 		$handle = opendir($this->_pubdir);
 		while (false !== ($entry = readdir($handle))) {
 			if($entry === '.' || $entry === '..') { continue; }
-			echo "<a href=\"/show/$entry\">$entry</a><br>";
+			$files[] = $entry;
 		}
+		return $this->_view->render("views/index.phtml", array("files" => $files));
 	}
 
 	public function showAction() {
 		$this->_initReader();
 		$toc = $this->tocAction();
 		$epub = $this->_epubFile;
-		require_once("views/show.phtml");
-		die();
+		return $this->_view->render("views/show.phtml", array(
+			"toc" => $toc,
+			"epub" => $epub
+		));
 	}
 }
