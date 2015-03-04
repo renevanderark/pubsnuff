@@ -81,6 +81,13 @@ class Epub_API {
 		}
 	}
 
+	public function coverpageAction() {
+		switch($this->_format) {
+			case "json": $this->_setContentType($this->_format); return json_encode($this->reader->getCoverpage()); break;
+			default: return $this->reader->getCoverpage();
+		}
+	}
+
 	public function serveAction() {
 		$this->_format = strtolower(preg_replace("/^.+\.([a-z]+)$/", "$1", $this->_zipAccess));
 		$this->_setContentType($this->_format);

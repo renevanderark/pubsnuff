@@ -26,10 +26,12 @@ class Epub_App extends Epub_API {
 	public function showAction() {
 		$this->_initReader();
 		$toc = $this->tocAction();
+		$coverPage = $this->coverpageAction();
 		$epub = $this->_epubFile;
 		return $this->_view->render("views/show.phtml", array(
 			"toc" => $toc,
-			"epub" => $epub
+			"epub" => $epub,
+			"coverPage" => $coverPage
 		));
 	}
 }

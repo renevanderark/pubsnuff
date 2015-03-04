@@ -72,6 +72,13 @@ class Epub_Reader {
 		return $this->_parseToc();
 	}
 
+	public function getCoverpage() {
+		$coverRef = $this->opf->xpath("//opf:spine/opf:itemref/@idref");
+		$coverId = (string) $coverRef[0];
+		$coverPage = $this->opf->xpath("//opf:manifest/opf:item[@id='$coverId']/@href");
+		return (string) $coverPage[0];
+	}
+
 	public function getFile($fileRef) {
 		$fp = $this->zip->getStream($this->opfRoot . $fileRef);
 		$data = stream_get_contents($fp);

@@ -9,10 +9,15 @@
 			toc.toggle = function() {
 				var el = document.getElementById("toc");
 				if(el.className === 'opened') {
+					el.scrollTop = 0;
 					el.className = '';
 				} else {
 					el.className = 'opened';
 				}
+			};
+			window.onresize = function(e) {
+				var el = document.getElementById("toc");
+				if(window.innerWidth < 600) { el.scrollTop = 0; }
 			};
 		</script>
 	</head>
@@ -23,7 +28,7 @@
 			<?php renderNavPoints($epub, $toc["navPoints"]); ?>
 		</div>
 
-		<iframe name="main">
+		<iframe name="main" src="/epub/serve/<?php echo $epub . "/" . $coverPage; ?>">
 		</iframe>
 	</body>
 </html>
@@ -32,7 +37,7 @@
 	<ul>
 		<?php foreach($navPoints as $navPoint): ?>
 			<li>
-				<a onclick="toc.toggle();" target="main" href="/epub/serve/<?php echo $epub . "/" . $navPoint["src"]; ?>">
+				<a onclick="if(window.innerWidth < 600) { toc.toggle(); }" target="main" href="/epub/serve/<?php echo $epub . "/" . $navPoint["src"]; ?>">
 					<?php echo $navPoint["label"]; ?>
 					<?php if(isset($navPoint["navPoints"])) { renderNavPoints($epub, $navPoint["navPoints"]); } ?>
 				</a>
