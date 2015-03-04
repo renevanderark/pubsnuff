@@ -11,7 +11,7 @@ iframe[name='main'] {
 	top: 0;
 	z-index: 1;
 	box-shadow: 0 5px 5px -5px #888888;
-	transition: width 0.2s ease-in-out,left 0.2s ease-in-out;
+	transition: left 0.2s ease-in-out;
 }
 
 #toc {
@@ -40,8 +40,13 @@ iframe[name='main'] {
 }
 #toc-toggle > img {
 	float: left;
+	transform: rotate(180deg);
+	transition: transform 0.2s linear;
 }
 
+#toc.opened #toc-toggle > img {
+	transform: rotate(0deg);
+}
 #next-page {
 	display: block;
 	position: absolute;
