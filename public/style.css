@@ -12,6 +12,7 @@ iframe[name='main'] {
 	z-index: 1;
 	box-shadow: 0 5px 5px -5px #888888;
 	transition: left 0.2s ease-in-out;
+	overflow-x: hidden;
 }
 
 #toc {
@@ -40,34 +41,66 @@ iframe[name='main'] {
 }
 #toc-toggle > img {
 	float: left;
-	transform: rotate(180deg);
+	transform: rotate(-180deg);
 	transition: transform 0.2s linear;
 }
 
 #toc.opened #toc-toggle > img {
 	transform: rotate(0deg);
 }
-#next-page {
+
+#spine {
 	display: block;
 	position: absolute;
 	z-index: 999;
 	bottom: 0;
-	right: 0;
-
+	height: 15px;
+	width: 95%;
+	left: 5%;
+	overflow: hidden;
 }
 
-#next-page.invisible {
-	opacity: 0;
+#spine > a {
+	position: absolute;
+	display: block;
+	height: 8px;
+	width: 8px;
+	border-radius: 5px;
+	background-color: #ddd;
+	z-index: 1;
 }
 
-#next-page.visible {
+#spine > a.selected {
+	background-color: #333;
+	z-index: 2;
+}
+
+#next-page, #prev-page {
+	text-decoration: none;
+	display: block;
+	position: absolute;
+	z-index: 999;
+	bottom: 3px;
+	right: 10px;
+}
+#prev-page {
+	left: 10px;
+}
+
+#next-page.normal,
+#prev-page.normal {
+	opacity: 0.3;
+}
+
+#next-page.flash,
+#prev-page.flash {
 	opacity: 1;
 	transition: opacity 0.4s ease-in-out;
 }
 
 #toc.opened {
 	width: 20%;
-	height: 100%;
+	height: 95%;
 	opacity: 1;
 
 }
@@ -96,7 +129,7 @@ iframe[name='main'] {
 #toc > ul {
 	clear: left;
 	width: 99%;
-	height: 100%;
+	height: 90%;
 	overflow-y: auto;
 }
 

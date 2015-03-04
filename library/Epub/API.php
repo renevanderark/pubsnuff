@@ -88,6 +88,13 @@ class Epub_API {
 		}
 	}
 
+	public function spineAction() {
+		switch($this->_format) {
+			case "json": $this->_setContentType($this->_format); return json_encode($this->reader->getSpine()); break;
+			default: return $this->reader->getSpine();
+		}
+	}
+
 	public function serveAction() {
 		$this->_format = strtolower(preg_replace("/^.+\.([a-z]+)$/", "$1", $this->_zipAccess));
 		$this->_setContentType($this->_format);

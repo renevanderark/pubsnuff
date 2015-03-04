@@ -6,16 +6,16 @@
 		<link rel="stylesheet" href="/style.css" type="text/css" media="screen" />
 		<script type="text/javascript">
 			var toc = {};
+
 			toc.toggle = function() {
 				var el = document.getElementById("toc");
 				if(el.className === 'opened') {
-					el.scrollTop = 0;
 					el.className = '';
 				} else {
 					el.className = 'opened';
 					var ul = document.getElementsByTagName("ul")[0];
 					var h2 = document.getElementsByTagName("h2")[0];
-					ul.style.marginTop = h2.clientHeight + 20 + "px";
+					ul.style.paddingTop = h2.clientHeight + 20 + "px";
 				}
 			};
 			window.onresize = function(e) {
@@ -35,24 +35,57 @@
 
 		<iframe id="book" name="main" src="http://<?php echo $_SERVER['SERVER_NAME']; ?>/epub/serve/<?php echo $epub . "/" . $coverPage; ?>">
 		</iframe>
-		<a id="next-page" class="invisible">TODO: next page</a>
+		<a id="prev-page" target="main" class="normal">&lt;</a>
+		<div id="spine"></div>
+		<a id="next-page" target="main">&gt;</a>
 		<script type="text/javascript">
+			var spine = <?php echo json_encode($spine); ?>;
 			var book = document.getElementById("book");
+			var nextPage = document.getElementById("next-page");
+			var prevPage = document.getElementById("prev-page");
 			function checkPosition() {
-				var nextPage = document.getElementById("next-page");
-				console.log(nextPage);
-				console.log(book.contentWindow.scrollY + book.contentWindow.innerHeight, book.contentWindow.document.body.offsetHeight- 10);
+				
 				if(book.contentWindow.scrollY + book.contentWindow.innerHeight >= book.contentWindow.document.body.offsetHeight - 10) {
-					nextPage.className = "visible";
+					nextPage.className = "flash";
 				} else {
-					nextPage.className = "invisible";
+					nextPage.className = "normal";
 				}
 			}
+			function showSpine() {
+				var spineContainer = document.getElementById("spine");
+
+				spineContainer.innerHTML = "";
+				for(var i = 0; i < spine.length; i++) {
+					var node = document.createElement("a");
+					var spineSrc = "http://<?php echo $_SERVER['SERVER_NAME']; ?>/epub/serve/<?php echo $epub . "/" ?>" + spine[i];
+					node.setAttribute("href", spineSrc);
+					node.setAttribute("target", "main");
+					node.style.left = parseInt(i / (spine.length - 1) * 90) + "%";
+					spineContainer.appendChild(node);
+					if(spineSrc === book.contentWindow.location.href) {
+						node.className = "selected";
+						if(i < spine.length - 1) {
+							var nextSrc = "http://<?php echo $_SERVER['SERVER_NAME']; ?>/epub/serve/<?php echo $epub . "/" ?>" + spine[i + 1];
+							nextPage.setAttribute("href", nextSrc);
+							nextPage.style.display = "block";
+						} else {
+							nextPage.style.display = "none";
+						}
+						if(i > 0) {
+							var prevSrc = "http://<?php echo $_SERVER['SERVER_NAME']; ?>/epub/serve/<?php echo $epub . "/" ?>" + spine[i - 1];
+							prevPage.setAttribute("href", prevSrc);
+							prevPage.style.display = "block";
+						} else {
+							prevPage.style.display = "none";
+						}
+					}
+				}
+
+			}
 			book.onload = function() {
+				showSpine();
 				book.contentWindow.onscroll = checkPosition;
-				book.contentWindow.document.body.setAttribute("style", "padding-left: 24px; padding-right: 24px");
-				console.log(book.contentWindow.document.body);
-				
+				book.contentWindow.document.body.setAttribute("style", "padding-left: 24px; padding-right: 24px; padding-top: 48px; padding-bottom: 48px");
 				checkPosition();
 			}
 		</script>

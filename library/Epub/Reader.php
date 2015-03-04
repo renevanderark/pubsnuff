@@ -39,7 +39,7 @@ class Epub_Reader {
 		$label = $navPoint->xpath("ncx:navLabel/ncx:text/text()");
 		$src = $navPoint->xpath("ncx:content/@src");
 		$aNavPoint = array(
-			"label" => (string) $label[0],
+			"label" => isset($label[0]) ? (string) $label[0] : count($navPoints),
 			"src" => (string) $src[0],
 		);
 
@@ -52,7 +52,11 @@ class Epub_Reader {
 
 	private function _parseToc() {
 		$title = $this->toc->xpath("//ncx:docTitle/ncx:text/text()");
-		$toc = array("title" => (string) $title[0], "navPoints" => array());
+		
+		$toc = array(
+			"title" => isset($title[0]) ? (string) $title[0] : "", 
+			"navPoints" => array()
+		);
 		foreach($this->toc->xpath("//ncx:navMap/ncx:navPoint") as $navPoint) {
 			$this->_addNavPoint($navPoint, $toc["navPoints"]);
 		}
@@ -77,6 +81,17 @@ class Epub_Reader {
 		$coverId = (string) $coverRef[0];
 		$coverPage = $this->opf->xpath("//opf:manifest/opf:item[@id='$coverId']/@href");
 		return (string) $coverPage[0];
+	}
+
+	public function getSpine() {
+		$spine = array();
+		$itemRefs = $this->opf->xpath("//opf:spine/opf:itemref/@idref");
+		foreach($itemRefs as $itemRef) {
+			$itemId = (string) $itemRef;
+			$itemSrc = $this->opf->xpath("//opf:manifest/opf:item[@id='$itemId']/@href");
+			$spine[] = (string) $itemSrc[0];
+		}
+		return $spine;
 	}
 
 	public function getFile($fileRef) {
