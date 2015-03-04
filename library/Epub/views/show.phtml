@@ -28,8 +28,26 @@
 			<?php renderNavPoints($epub, $toc["navPoints"]); ?>
 		</div>
 
-		<iframe name="main" src="/epub/serve/<?php echo $epub . "/" . $coverPage; ?>">
+		<iframe id="book" name="main" src="http://<?php echo $_SERVER['SERVER_NAME']; ?>/epub/serve/<?php echo $epub . "/" . $coverPage; ?>">
 		</iframe>
+		<a id="next-page" class="invisible">TODO: next page</a>
+		<script type="text/javascript">
+			var book = document.getElementById("book");
+			function checkPosition() {
+				var nextPage = document.getElementById("next-page");
+				console.log(nextPage);
+				console.log(book.contentWindow.scrollY + book.contentWindow.innerHeight, book.contentWindow.document.body.offsetHeight- 10);
+				if(book.contentWindow.scrollY + book.contentWindow.innerHeight >= book.contentWindow.document.body.offsetHeight - 10) {
+					nextPage.className = "visible";
+				} else {
+					nextPage.className = "invisible";
+				}
+			}
+			book.onload = function() {
+				book.contentWindow.onscroll = checkPosition;
+				checkPosition();
+			}
+		</script>
 	</body>
 </html>
 
@@ -37,7 +55,7 @@
 	<ul>
 		<?php foreach($navPoints as $navPoint): ?>
 			<li>
-				<a onclick="if(window.innerWidth < 600) { toc.toggle(); }" target="main" href="/epub/serve/<?php echo $epub . "/" . $navPoint["src"]; ?>">
+				<a onclick="if(window.innerWidth < 600) { toc.toggle(); }" target="main" href="http://<?php echo $_SERVER['SERVER_NAME']; ?>/epub/serve/<?php echo $epub . "/" . $navPoint["src"]; ?>">
 					<?php echo $navPoint["label"]; ?>
 					<?php if(isset($navPoint["navPoints"])) { renderNavPoints($epub, $navPoint["navPoints"]); } ?>
 				</a>

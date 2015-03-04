@@ -35,6 +35,23 @@ iframe[name='main'] {
 	background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wMEBhICdQmEkAAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAAEESURBVEjH7VSxSsRAEH2zHCOptAikVO8DAhbWsYhkC79BsPIH/A9LmwMr8RuWTaH1kSZ+gJYX0mhhiGHNWEU8UljscXCQV+2bYt4w8/YBE/4B/SVZlp0RUeLTUESejTFPA58ND631HoBLIrryHPo+juNlWZafAKCGqnNuDuBkA1s5jaLoeCC/Am3brgC8bEBgWVXV69ZusF0XpWm6z8wHPg27rnvP8/xjJJAkySwIghsA155DL+q6vi2KolmzqVLqUEQulFJHngLnYRg+AHhbcxEzN0T05btzEfnu+74ZfTRjzEprbUVk7qlhrbX1SACAOOfumPnR98gAZAq7Kex2KOx2Hz/vcX49aqewRgAAAABJRU5ErkJggg==');
 }
 
+#next-page {
+	display: block;
+	position: absolute;
+	z-index: 999;
+	bottom: 0;
+	right: 0;
+
+}
+
+#next-page.invisible {
+	opacity: 0;
+}
+
+#next-page.visible {
+	opacity: 1;
+	transition: opacity 0.4s ease-in-out;
+}
 
 #toc.opened {
 	width: 20%;
