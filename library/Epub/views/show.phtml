@@ -13,18 +13,23 @@
 					el.className = '';
 				} else {
 					el.className = 'opened';
+					var ul = document.getElementsByTagName("ul")[0];
+					var h2 = document.getElementsByTagName("h2")[0];
+					ul.style.marginTop = h2.clientHeight + 20 + "px";
 				}
 			};
 			window.onresize = function(e) {
 				var el = document.getElementById("toc");
-				if(window.innerWidth < 600) { el.scrollTop = 0; }
+				if(window.innerWidth <= 600) { el.scrollTop = 0; }
 			};
 		</script>
 	</head>
 	<body>
 		<div id="toc">
-			<a id="toc-toggle" onclick="toc.toggle();"></a>
-			<h2><?php echo $toc["title"]; ?></h2>
+			<a id="toc-toggle" onclick="toc.toggle();">
+				<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wMEBhICdQmEkAAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAAEESURBVEjH7VSxSsRAEH2zHCOptAikVO8DAhbWsYhkC79BsPIH/A9LmwMr8RuWTaH1kSZ+gJYX0mhhiGHNWEU8UljscXCQV+2bYt4w8/YBE/4B/SVZlp0RUeLTUESejTFPA58ND631HoBLIrryHPo+juNlWZafAKCGqnNuDuBkA1s5jaLoeCC/Am3brgC8bEBgWVXV69ZusF0XpWm6z8wHPg27rnvP8/xjJJAkySwIghsA155DL+q6vi2KolmzqVLqUEQulFJHngLnYRg+AHhbcxEzN0T05btzEfnu+74ZfTRjzEprbUVk7qlhrbX1SACAOOfumPnR98gAZAq7Kex2KOx2Hz/vcX49aqewRgAAAABJRU5ErkJggg=="/>
+				<h2><?php echo $toc["title"]; ?></h2>
+			</a>
 			<?php renderNavPoints($epub, $toc["navPoints"]); ?>
 		</div>
 
@@ -45,6 +50,9 @@
 			}
 			book.onload = function() {
 				book.contentWindow.onscroll = checkPosition;
+				book.contentWindow.document.body.setAttribute("style", "padding-left: 24px; padding-right: 24px");
+				console.log(book.contentWindow.document.body);
+				
 				checkPosition();
 			}
 		</script>
@@ -55,7 +63,7 @@
 	<ul>
 		<?php foreach($navPoints as $navPoint): ?>
 			<li>
-				<a onclick="if(window.innerWidth < 600) { toc.toggle(); }" target="main" href="http://<?php echo $_SERVER['SERVER_NAME']; ?>/epub/serve/<?php echo $epub . "/" . $navPoint["src"]; ?>">
+				<a onclick="if(window.innerWidth <= 600) { toc.toggle(); }" target="main" href="http://<?php echo $_SERVER['SERVER_NAME']; ?>/epub/serve/<?php echo $epub . "/" . $navPoint["src"]; ?>">
 					<?php echo $navPoint["label"]; ?>
 					<?php if(isset($navPoint["navPoints"])) { renderNavPoints($epub, $navPoint["navPoints"]); } ?>
 				</a>
